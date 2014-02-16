@@ -1,0 +1,37 @@
+make Figure notseen, also constructors of Figure
+
+filter image's figures method
+
+make everything unneeded outside private
+
+format all
+
+delete error print for generating video
+
+get/set scale
+
+think if GetSubClass works properly for more than one "inheritance" on the chain
+
+try make Figure abstract(by removing Visualize method if possible)
+
+make createVideo function accept option of starting from selected image number and update readme
+
+make looking in GOPATH for ffmpeg.exe and update readme
+
+send ffmpeg.exe also to the resource folder and update readme
+
+Add fix to readme - give example for each ot 3 types of extend or create new.
+
+Change info in readme - for Composed Figures don't declare the Visualize(), but InitializeFigures() which should be added to new inheriting interface
+
+no check for duplicate keys of figures in collection
+
+move lineWidth property to class Figure perhaps.
+
+for each change update readme AND documentation.
+
+Seperate an abstract class - SingleFigure and place there lineWidth, isFilled, etc. then edit visualize method comment!!!
+
+Add functionallity to choose how often the update method is called, UpdateMethod factory, etc.
+
+add documentation for rectangle, round rectangle, globals, image, text, update type

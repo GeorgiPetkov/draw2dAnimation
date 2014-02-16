@@ -4,11 +4,13 @@ import (
 	"math"
 )
 
+// An abstract figure type. Represents a composition of figures kept as collection. Updates to this figure affect it as hole including each part.
 type ComposedFigure struct {
 	*Figure
 	figures *figuresCollection
 }
 
+// Constructor setting current struct's fields and default values for the base struct
 func NewComposedFigure() *ComposedFigure {
 	composedFigure := &ComposedFigure{NewFigure(), newFiguresCollection()}
 	composedFigure.SetSubClass(composedFigure)
@@ -16,6 +18,7 @@ func NewComposedFigure() *ComposedFigure {
 	return composedFigure
 }
 
+// Constructor setting both base struct's and current struct's fields.
 func NewComposedFigure3(depth int, startPoint Point, rotationDegrees float64) *ComposedFigure {
 	composedFigure := &ComposedFigure{NewFigure3(depth, startPoint, rotationDegrees), newFiguresCollection()}
 	composedFigure.SetSubClass(composedFigure)
@@ -23,21 +26,26 @@ func NewComposedFigure3(depth int, startPoint Point, rotationDegrees float64) *C
 	return composedFigure
 }
 
+// Defines the visualization of the figure according to position (0, 0).
 func (this *ComposedFigure) Visualize() {
 }
 
+// Adds figure with string key to the contained collection.
 func (this *ComposedFigure) AddFigure(name string, figure Figurer) {
 	this.figures.add(name, figure)
 }
 
+// Removes figure by string key from the contained collection.
 func (this *ComposedFigure) RemoveFigure(name string) {
 	this.figures.remove(name)
 }
 
+// Gets the figure corresponding to the given string key in the contained collection or nil if not found.
 func (this *ComposedFigure) GetFigureByName(name string) Figurer {
 	return this.figures.getByName(name)
 }
 
+// Updates the figure as a whole and each of its parts..
 func (this *ComposedFigure) Update() {
 	this.GetBase().Update()
 	this.figures.traverse(func(figure Figurer) {
@@ -45,6 +53,7 @@ func (this *ComposedFigure) Update() {
 	})
 }
 
+// Draw the figure by visualizing all its part taking in to account the translation and rotation of the figure.
 func (this *ComposedFigure) Draw() {
 	this.figures.traverse(func(figure Figurer) {
 		graphicContext := GetTheImageGraphicContext()

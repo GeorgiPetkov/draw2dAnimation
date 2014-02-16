@@ -5,6 +5,7 @@ import (
 	"math"
 )
 
+// An adroid figure. Change width and height for adjusting the figure to the desired ratio.
 type Android struct {
 	*ComposedFigure
 	BodyWidth  float64
@@ -12,6 +13,7 @@ type Android struct {
 	LineWidth  float64
 }
 
+// Constructor setting current struct's fields and default values for the base struct
 func NewAndroid(bodyWidth float64, bodyHeight float64, lineWidth float64, fillColor color.RGBA) *Android {
 	android := &Android{NewComposedFigure(), bodyWidth, bodyHeight, lineWidth}
 	android.SetSubClass(android)
@@ -20,6 +22,7 @@ func NewAndroid(bodyWidth float64, bodyHeight float64, lineWidth float64, fillCo
 	return android
 }
 
+// Constructor setting both base struct's and current struct's fields.
 func NewAndroid5(
 	bodyWidth float64, bodyHeight float64, lineWidth float64,
 	depth int, startPoint Point, rotationDegrees float64, fillColor color.RGBA) *Android {
@@ -30,6 +33,7 @@ func NewAndroid5(
 	return android
 }
 
+// Called by constructors to set initial state of the figure. Can also be used for reset.
 func (this *Android) InitializeFigures(fillColor color.RGBA) {
 	radius := 5.0
 

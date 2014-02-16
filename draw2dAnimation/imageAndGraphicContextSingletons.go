@@ -8,6 +8,7 @@ import (
 var imageInstance *image = nil
 var graphicContextInstance *draw2d.ImageGraphicContext = nil
 
+// Gets the singleton image.
 func GetTheImage() *image {
 	if imageInstance == nil {
 		imageInstance = newImage()
@@ -17,6 +18,7 @@ func GetTheImage() *image {
 	return imageInstance
 }
 
+// Gets the singleton ImageGraphicContext.
 func GetTheImageGraphicContext() *draw2d.ImageGraphicContext {
 	if graphicContextInstance == nil {
 		graphicContextInstance = draw2d.NewGraphicContext(GetTheImage().canvas)

@@ -4,6 +4,7 @@ import (
 	"image/color"
 )
 
+// Represents the base interface of all figures. For information on the methods see struct Figure.
 type Figurer interface {
 	GetDepth() int
 	SetDepth(value int)
