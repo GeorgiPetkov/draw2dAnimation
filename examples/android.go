@@ -1,7 +1,7 @@
 package main
 
 import (
-	"draw2dAnimation"
+	"github.com/GeorgiPetkov/draw2dAnimation/draw2dAnimation"
 	"image/color"
 )
 

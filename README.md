@@ -8,7 +8,7 @@ Install
 
         go get github.com/GeorgiPetkov/draw2dAnimation/draw2dAnimation
 
-In order to use FFmpeg features you need to get ffmpeg.exe from [the official site](http://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20140221-git-76dd01e-win64-static.7z) and place it in the same directory as the running .go file.
+In order to use FFmpeg features you need to get ffmpeg.exe from [the official site](http://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20140221-git-76dd01e-win64-static.7z) and place it in the current directory or in directory pointed by the PATH variable.
 Note: FFmpeg features are supported only for Windows for now.
 
 Features

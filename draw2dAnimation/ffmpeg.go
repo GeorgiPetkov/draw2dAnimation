@@ -35,15 +35,15 @@ func CreateVideoWithFrameStartNumber(inputDir string, outputDir string, fullFile
 	ExecuteCustomFFMpegCommand(commandArgs, input)
 }
 
-// Executes custom FFmpeg command by given arguments excluding the prefix "ffmpeg " and input string if need.
-func ExecuteCustomFFMpegCommand(args string, input string) {
-	cmd := exec.Command("cmd", "/C ffmpeg "+args)
+// Executes custom FFmpeg command by given arguments excluding the command name and input string if need. The ffmpeg.exe should be found in the PATH variable or in the current directory.
+func ExecuteCustomFFMpegCommand(args string, path string) {
+	cmd := exec.Command("ffmpeg", args)
 	if input != "" {
 		cmd.Stdin = strings.NewReader(input)
 	}
 
 	error := cmd.Run()
 	if error != nil {
-		panic(fmt.Sprintf("Error occured while trying to execute FFmpeg command. %v Please check all paths, ffmpeg.exe existance in the directory of the running program and the arguments. Also make sure the command doesn't require additional input.", error))
+		panic(fmt.Sprintf("Error occured while trying to execute FFmpeg command. %v Please check ffmpeg.exe existance in PATH or the current directory and the arguments. Also make sure the command doesn't require additional input that was not provided.", error))
 	}
 }
