@@ -14,20 +14,24 @@ func CreateVideo(inputDir string, outputDir string, fullFileName string, inputFp
 		inputDir+FramePattern+"%03d.png",
 		outputFps,
 		outputDir+fullFileName)
+
+	var input string = "N"
 	if overwrite {
-		ExecuteCustomFFMpegCommand(commandArgs, "y")
-	} else {
-		ExecuteCustomFFMpegCommand(commandArgs, "N")
+		input = "y"
 	}
+
+	ExecuteCustomFFMpegCommand(commandArgs, input)
 }
 
 // Executes custom FFmpeg command by given arguments excluding the prefix "ffmpeg " and input string if need.
 func ExecuteCustomFFMpegCommand(args string, input string) {
 	cmd := exec.Command("cmd", "/C ffmpeg "+args)
-	//if input != "" {
-	cmd.Stdin = strings.NewReader(input)
-	//}
+	if input != "" {
+		cmd.Stdin = strings.NewReader(input)
+	}
 
 	error := cmd.Run()
-	fmt.Println(error)
+	if error != nil {
+		panic(fmt.Sprintf("Error occured while trying to execute FFmpeg command. %v Please check all paths, ffmpeg.exe existance in the directory of the running program and the arguments. Also make sure the command doesn't require additional input.", error))
+	}
 }

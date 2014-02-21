@@ -1,6 +1,7 @@
 package draw2dAnimation
 
 import (
+	"fmt"
 	"image/color"
 	"math"
 )
@@ -15,7 +16,7 @@ type Figure struct {
 	fillColor             color.RGBA
 	strokeColor           color.RGBA
 	isFilled              bool
-	updateType            UpdateType
+	updateTypes           updateType
 	updateTranslation     Point
 	updateRotationDegrees float64
 	updateMethod          func(Figurer)
@@ -123,9 +124,9 @@ func (this *Figure) GetUpdateRotationDegrees() float64 {
 // Sets the degrees by which the figure should rotate on each call of Update().
 func (this *Figure) SetUpdateRotationDegrees(value float64) {
 	if value == 0.0 {
-		this.updateType &^= Rotation
+		this.updateTypes &^= Rotation
 	} else {
-		this.updateType |= Rotation
+		this.updateTypes |= Rotation
 	}
 
 	this.updateRotationDegrees = value
@@ -133,17 +134,15 @@ func (this *Figure) SetUpdateRotationDegrees(value float64) {
 
 // Gets the vector by which the figure is translated on each call of Update().
 func (this *Figure) GetUpdateTranslation() Point {
-	return Point{
-		this.updateTranslation.X,
-		this.updateTranslation.Y}
+	return this.updateTranslation
 }
 
 // Sets the vector by which the figure should translate on each call of Update().
 func (this *Figure) SetUpdateTranslation(value Point) {
 	if value.X == 0 && value.Y == 0 {
-		this.updateType &^= Translation
+		this.updateTypes &^= Translation
 	} else {
-		this.updateType |= Translation
+		this.updateTypes |= Translation
 	}
 
 	this.updateTranslation = value
@@ -157,9 +156,9 @@ func (this *Figure) GetUpdateMethod() func(Figurer) {
 // Sets a custom update method to be used in updating the figure on each call of Update().
 func (this *Figure) SetUpdateMethod(value func(Figurer)) {
 	if value == nil {
-		this.updateType &^= Custom
+		this.updateTypes &^= Custom
 	} else {
-		this.updateType |= Custom
+		this.updateTypes |= Custom
 	}
 
 	this.updateMethod = value
@@ -191,20 +190,21 @@ func (this Figure) Draw() {
 
 // Updates the figure by the custom method, the update translation and the update rotation degrees.
 func (this *Figure) Update() {
-	if (this.updateType & Custom) != 0 {
+	if (this.updateTypes & Custom) != 0 {
 		this.updateMethod(this)
 	}
 
-	if (this.updateType & Translation) != 0 {
+	if (this.updateTypes & Translation) != 0 {
 		this.startPoint.X += this.updateTranslation.X
 		this.startPoint.Y += this.updateTranslation.Y
 	}
 
-	if (this.updateType & Rotation) != 0 {
+	if (this.updateTypes & Rotation) != 0 {
 		this.rotationDegrees += this.updateRotationDegrees
 	}
 }
 
 // Does nothing. Needed to implement the Figurer interface. Should be ovewritted by extending substruct.
 func (this *Figure) Visualize() {
+	panic(fmt.Sprintf("Type %T doesn't implement Visualize() method.", this.subClass))
 }

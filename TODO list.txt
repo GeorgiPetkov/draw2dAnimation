@@ -32,6 +32,10 @@ for each change update readme AND documentation.
 
 Seperate an abstract class - SingleFigure and place there lineWidth, isFilled, etc. then edit visualize method comment!!!
 
+Fix README
+- A Go not project, package
+- Fix "extending and creating new"'s text
+
 Add functionallity to choose how often the update method is called, UpdateMethod factory, etc.
 
-add documentation for rectangle, round rectangle, globals, image, text, update type
+Add info from where to get ffmpeg.exe

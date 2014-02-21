@@ -4,6 +4,7 @@ import (
 	"code.google.com/p/draw2d/draw2d"
 )
 
+// A figure type that allows visualization of a text with custom font. Change font size and data to adjust the text visulization.
 type Text struct {
 	*Figure
 	FontData draw2d.FontData
@@ -11,6 +12,7 @@ type Text struct {
 	Text     string
 }
 
+// Constructor setting current struct's fields and default values for the base struct
 func NewText(fontData draw2d.FontData, fontSize float64, text string) *Text {
 	textFigure := &Text{NewFigure(), fontData, fontSize, text}
 	textFigure.SetSubClass(textFigure)
@@ -18,6 +20,7 @@ func NewText(fontData draw2d.FontData, fontSize float64, text string) *Text {
 	return textFigure
 }
 
+// Constructor setting both base struct's and current struct's fields.
 func NewText5(fontData draw2d.FontData, fontSize float64, text string,
 	depth int, startPoint Point, rotationDegrees float64) *Text {
 	textFigure := &Text{NewFigure3(depth, startPoint, 0), fontData, fontSize, text}
@@ -26,6 +29,7 @@ func NewText5(fontData draw2d.FontData, fontSize float64, text string,
 	return textFigure
 }
 
+// Defines the visualization of the figure according to position (0, 0).
 func (this *Text) Visualize() {
 	graphicContext := GetTheImageGraphicContext()
 	graphicContext.SetFontSize(this.FontSize)
@@ -40,12 +44,3 @@ func (this *Text) Visualize() {
 		graphicContext.StrokeString(this.Text)
 	}
 }
-
-/*func (this *Text) Visualize() {
-	graphicContext := GetTheImageGraphicContext()
-	graphicContext.FillStroke()
-	graphicContext.MoveTo(0, 0)
-	graphicContext.SetFontSize(this.FontSize)
-	graphicContext.SetFontData(this.FontData)
-	graphicContext.FillString(this.Text)
-}*/

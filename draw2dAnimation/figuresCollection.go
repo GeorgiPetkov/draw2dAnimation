@@ -15,7 +15,7 @@ func compareInts(first int, second int) int {
 	return 0
 }
 
-// Used as compare method for interface Figurer
+// Used as compare method for interface Figurer.
 func compareFigures(first interface{}, second interface{}) int {
 	firstFigure, secondFigure := first.(Figurer), second.(Figurer)
 	compareResult := compareInts(firstFigure.GetDepth(), secondFigure.GetDepth())
@@ -26,7 +26,7 @@ func compareFigures(first interface{}, second interface{}) int {
 	return compareInts(firstFigure.getId(), secondFigure.getId())
 }
 
-// used as inner collection of type ComposedFigure
+// Used as inner collection of type ComposedFigure.
 type figuresCollection struct {
 	tree       *avltree.Tree
 	dictionary map[string]Figurer
