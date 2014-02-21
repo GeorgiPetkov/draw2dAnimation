@@ -18,6 +18,8 @@ type Figurer interface {
 	SetStrokeColor(value color.RGBA)
 	GetIsFilled() bool
 	SetIsFilled(value bool)
+	GetLineWidth() float64
+	SetLineWidth(value float64)
 	GetUpdateTranslation() Point
 	SetUpdateTranslation(value Point)
 	GetUpdateRotationDegrees() float64

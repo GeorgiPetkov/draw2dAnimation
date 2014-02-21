@@ -1,7 +1,6 @@
 package draw2dAnimation
 
 import (
-	"fmt"
 	"image/color"
 	"math"
 )
@@ -16,6 +15,7 @@ type Figure struct {
 	fillColor             color.RGBA
 	strokeColor           color.RGBA
 	isFilled              bool
+	lineWidth             float64
 	updateTypes           updateType
 	updateTranslation     Point
 	updateRotationDegrees float64
@@ -24,11 +24,11 @@ type Figure struct {
 
 // Default constructor.
 func NewFigure() *Figure {
-	return NewFigure3(0, Point{0, 0}, 0.0)
+	return NewFigure4(0, Point{0.0, 0.0}, 0.0, 1.0)
 }
 
 // Constructor accepting depth(layer in the image), startPoint(to which all actions are related) and rotation degrees.
-func NewFigure3(depth int, startPoint Point, rotationDegrees float64) *Figure {
+func NewFigure4(depth int, startPoint Point, rotationDegrees float64, lineWidth float64) *Figure {
 	nextFigureId++
 	return &Figure{
 		id:              nextFigureId,
@@ -37,7 +37,9 @@ func NewFigure3(depth int, startPoint Point, rotationDegrees float64) *Figure {
 		rotationDegrees: rotationDegrees,
 		fillColor:       color.RGBA{255, 255, 255, 255},
 		strokeColor:     color.RGBA{0, 0, 0, 255},
-		isFilled:        false}
+		isFilled:        false,
+		lineWidth:       lineWidth,
+		updateTypes:     None}
 }
 
 // Gets the current instance. Has meaning to be used from struct extending this one if need.
@@ -116,6 +118,16 @@ func (this *Figure) SetIsFilled(value bool) {
 	this.isFilled = value
 }
 
+// Gets the line width of the figure.
+func (this *Figure) GetLineWidth() float64 {
+	return this.lineWidth
+}
+
+// Sets the line width of the figure.
+func (this *Figure) SetLineWidth(value float64) {
+	this.lineWidth = value
+}
+
 // Gets the degrees by which the figure rotates on each call of Update().
 func (this *Figure) GetUpdateRotationDegrees() float64 {
 	return this.updateRotationDegrees
@@ -164,12 +176,14 @@ func (this *Figure) SetUpdateMethod(value func(Figurer)) {
 	this.updateMethod = value
 }
 
-// Draws the figure taking into account the translation and rotation of the figure and using the implemented by the extending substruct Visualize() method.
+// Draws the figure taking into account the translation, rotation and the rest common properties of all figures and using the implemented by the extending subClass Visualize() method.
 func (this Figure) Draw() {
 	graphicContext := GetTheImageGraphicContext()
 	graphicContext.Save()
+
 	graphicContext.Translate(this.startPoint.X, this.startPoint.Y)
 	graphicContext.Rotate(this.rotationDegrees * (math.Pi / 180.0))
+	graphicContext.SetLineWidth(this.lineWidth)
 
 	if this.isFilled {
 		graphicContext.SetFillColor(this.fillColor)
@@ -191,7 +205,7 @@ func (this Figure) Draw() {
 // Updates the figure by the custom method, the update translation and the update rotation degrees.
 func (this *Figure) Update() {
 	if (this.updateTypes & Custom) != 0 {
-		this.updateMethod(this)
+		this.updateMethod(this.subClass)
 	}
 
 	if (this.updateTypes & Translation) != 0 {
@@ -202,9 +216,4 @@ func (this *Figure) Update() {
 	if (this.updateTypes & Rotation) != 0 {
 		this.rotationDegrees += this.updateRotationDegrees
 	}
-}
-
-// Does nothing. Needed to implement the Figurer interface. Should be ovewritted by extending substruct.
-func (this *Figure) Visualize() {
-	panic(fmt.Sprintf("Type %T doesn't implement Visualize() method.", this.subClass))
 }

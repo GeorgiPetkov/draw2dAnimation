@@ -23,7 +23,10 @@ func NewText(fontData draw2d.FontData, fontSize float64, text string) *Text {
 // Constructor setting both base struct's and current struct's fields.
 func NewText5(fontData draw2d.FontData, fontSize float64, text string,
 	depth int, startPoint Point, rotationDegrees float64) *Text {
-	textFigure := &Text{NewFigure3(depth, startPoint, 0), fontData, fontSize, text}
+	textFigure := &Text{NewFigure(), fontData, fontSize, text}
+	textFigure.SetDepth(depth)
+	textFigure.SetStartPoint(startPoint)
+	textFigure.SetRotationDegrees(rotationDegrees)
 	textFigure.SetSubClass(textFigure)
 
 	return textFigure

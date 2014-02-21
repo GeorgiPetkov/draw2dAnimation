@@ -1,14 +1,15 @@
 draw2dAnimation
 ===============
 
-A Go project for creating 2d animations using primitives from the [draw2d library](https://code.google.com/p/draw2d/) and [FFmpeg](http://ffmpeg.org/).
+A Go package for creating 2d animations using primitives from the [draw2d library](https://code.google.com/p/draw2d/) and [FFmpeg](http://ffmpeg.org/).
 
 Install
 =======
 
-        go get https://github.com/GeorgiPetkov/draw2dAnimation/draw2dAnimation
+        go get github.com/GeorgiPetkov/draw2dAnimation/draw2dAnimation
 
-In order to use ffmpeg features you need to get ffmpeg.exe from and place it in the same directory as the running .go file.
+In order to use FFmpeg features you need to get ffmpeg.exe from [the official site](http://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20140221-git-76dd01e-win64-static.7z) and place it in the same directory as the running .go file.
+Note: FFmpeg features are supported only for Windows for now.
 
 Features
 ========
@@ -24,24 +25,28 @@ Usage
 =================
 
         import (
-          https://github.com/GeorgiPetkov/draw2dAnimation/draw2dAnimation
-        )
+			"github.com/GeorgiPetkov/draw2dAnimation/draw2dAnimation"
+		)
 
 
 The main idea
 -------------
 
 Images contain a set of figures to be drawn and saved as frame. Each figure can be updated by rotation, translation or by given custom method (in order to simulate movement for the next frame). By custom method you can update any of the figures fields including depth(layer of the image), position, rotation, rate of translations or rotations, should the figure be filled with it's fill color and changing any other custom or given field.
+You can create frames from the images and concatenate them in a video.
 
 Extending or adding new figure
 ------------------------------
 
-In order to extend the functionality you can easily add new figure types by using the base structs Figure and ComposedFigure or any of the rest presented figures which are a good example of how to do this. To extend a selected type you need to have anonymous field with pointer to that type and any custom field you may need. You have to provide a few constructors for that typem, calling the constructor of the base type and calling the SetSubClass() method. At that point all that is left is to implement the Visualize() method. In this method you should define the appearance of the object according to position (0, 0). The base class takes care of using it according to all type of updates that you have provided, setting colors and calling Stroke() or FillStroke() depending on the figure's state. For example see [heart.go](https://github.com/GeorgiPetkov/draw2dAnimation/blob/master/draw2dAnimation/heart.go).
+In order to extend the functionality you can easily add new figure types by using the base structs Figure and ComposedFigure or any of the rest presented figures which are a good example of how to do this. To extend a selected type you need to have anonymous field with pointer to that type and any custom field you may need. You have to provide a few constructors for that type, calling the constructor of the base type and calling the SetSubClass() method with 'this'. At that point all that is left is to implement the Visualize() method. In this method you should define the appearance of the object according to position (0, 0). The base class takes care of using it according to all type of updates that you have provided, setting colors and calling Stroke() or FillStroke() depending on the figure's state.
+For example of a new figure see [heart.go](https://github.com/GeorgiPetkov/draw2dAnimation/blob/master/draw2dAnimation/heart.go).
+For example of a new composed figure see [android.go](https://github.com/GeorgiPetkov/draw2dAnimation/blob/master/draw2dAnimation/android.go).
+For example of extending an already existing figure see [rectangle.go](https://github.com/GeorgiPetkov/draw2dAnimation/blob/master/draw2dAnimation/rectangle.go) and [roundedRectangle.go](https://github.com/GeorgiPetkov/draw2dAnimation/blob/master/draw2dAnimation/roundedRectangle.go).
 
 Using FFmpeg
 ------------
 
-To use functionality of ffmpeg, different from the presented, use the ExecuteCustomFFMpegCommand() function passing the hole line excluding "ffmpeg" and optional input. For example of this see [ffmpeg.go](https://github.com/GeorgiPetkov/draw2dAnimation/blob/master/draw2dAnimation/ffmpeg.go), CreateVideo() function.
+To use functionality of ffmpeg, different from the presented, use the ExecuteCustomFFMpegCommand() function passing the hole line excluding the prefix "ffmpeg " and an optional input (empty string if not required). For example of this see [ffmpeg.go](https://github.com/GeorgiPetkov/draw2dAnimation/blob/master/draw2dAnimation/ffmpeg.go), CreateVideoWithFrameStartNumber() function.
 
 Using fonts
 -----------

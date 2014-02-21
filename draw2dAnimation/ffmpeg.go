@@ -6,11 +6,23 @@ import (
 	"strings"
 )
 
-// Creates video using FFmpeg. Overwrite indicates whether the file should be replaces in case that such already exists in the destination folder.
+// Creates video using FFmpeg and all of the frames with the global FramePattern in inputDir. Overwrite indicates whether the file should be replaces in case that such already exists in the destination folder.
 func CreateVideo(inputDir string, outputDir string, fullFileName string, inputFps float64, outputFps float64, overwrite bool) {
+	CreateVideoWithFrameStartNumber(inputDir, outputDir, fullFileName, inputFps, outputFps, -1, overwrite)
+}
+
+// Creates video using FFmpeg and all of the frames with the global FramePattern in inputDir starting from StartNumber. Overwrite indicates whether the file should be replaces in case that such already exists in the destination folder.
+// Information source: https://trac.ffmpeg.org/wiki/Create%20a%20video%20slideshow%20from%20images
+func CreateVideoWithFrameStartNumber(inputDir string, outputDir string, fullFileName string, inputFps float64, outputFps float64, startNumber int, overwrite bool) {
+	var startNumberArgument string = ""
+	if startNumber >= 0 {
+		startNumberArgument = fmt.Sprintf("-start_number %d", startNumber)
+	}
+
 	commandArgs := fmt.Sprintf(
-		"-r %v -i %s -c:v libx264 -vf fps=%v -pix_fmt yuv420p %s",
+		"-r %v %s -i %s -c:v libx264 -vf fps=%v -pix_fmt yuv420p %s",
 		inputFps,
+		startNumberArgument,
 		inputDir+FramePattern+"%03d.png",
 		outputFps,
 		outputDir+fullFileName)

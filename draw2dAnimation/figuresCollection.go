@@ -52,9 +52,29 @@ func (this *figuresCollection) remove(name string) {
 	this.tree.Remove(figure)
 }
 
+// Removes all figures from the collection passing the given filter.
+func (this *figuresCollection) removeByFilter(filter func(Figurer) bool) {
+	toBeDeleted := this.getByFilter(filter)
+	for key, _ := range toBeDeleted {
+		this.remove(key)
+	}
+}
+
 // Gets the figure corresponding to the given string key in the collection or nil if not found.
 func (this *figuresCollection) getByName(name string) Figurer {
 	return this.dictionary[name]
+}
+
+// Gets the string keys and the figures in the collection passing the given filter.
+func (this *figuresCollection) getByFilter(filter func(Figurer) bool) map[string]Figurer {
+	figuresPassingFilter := make(map[string]Figurer)
+	for key, figure := range this.dictionary {
+		if filter(figure) {
+			figuresPassingFilter[key] = figure
+		}
+	}
+
+	return figuresPassingFilter
 }
 
 // Traverse the collection calling a given function with each one of the figures.

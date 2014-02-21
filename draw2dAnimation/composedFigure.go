@@ -20,7 +20,10 @@ func NewComposedFigure() *ComposedFigure {
 
 // Constructor setting both base struct's and current struct's fields.
 func NewComposedFigure3(depth int, startPoint Point, rotationDegrees float64) *ComposedFigure {
-	composedFigure := &ComposedFigure{NewFigure3(depth, startPoint, rotationDegrees), newFiguresCollection()}
+	composedFigure := &ComposedFigure{NewFigure(), newFiguresCollection()}
+	composedFigure.SetDepth(depth)
+	composedFigure.SetStartPoint(startPoint)
+	composedFigure.SetRotationDegrees(rotationDegrees)
 	composedFigure.SetSubClass(composedFigure)
 
 	return composedFigure
@@ -45,7 +48,7 @@ func (this *ComposedFigure) GetFigureByName(name string) Figurer {
 	return this.figures.getByName(name)
 }
 
-// Updates the figure as a whole and each of its parts..
+// Updates the figure as a whole and each of its parts.
 func (this *ComposedFigure) Update() {
 	this.GetBase().Update()
 	this.figures.traverse(func(figure Figurer) {

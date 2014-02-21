@@ -10,12 +10,12 @@ type Android struct {
 	*ComposedFigure
 	BodyWidth  float64
 	BodyHeight float64
-	LineWidth  float64
 }
 
 // Constructor setting current struct's fields and default values for the base struct
 func NewAndroid(bodyWidth float64, bodyHeight float64, lineWidth float64, fillColor color.RGBA) *Android {
-	android := &Android{NewComposedFigure(), bodyWidth, bodyHeight, lineWidth}
+	android := &Android{NewComposedFigure(), bodyWidth, bodyHeight}
+	android.SetLineWidth(lineWidth)
 	android.SetSubClass(android)
 	android.InitializeFigures(fillColor)
 
@@ -23,10 +23,11 @@ func NewAndroid(bodyWidth float64, bodyHeight float64, lineWidth float64, fillCo
 }
 
 // Constructor setting both base struct's and current struct's fields.
-func NewAndroid5(
-	bodyWidth float64, bodyHeight float64, lineWidth float64,
-	depth int, startPoint Point, rotationDegrees float64, fillColor color.RGBA) *Android {
-	android := &Android{NewComposedFigure3(depth, startPoint, rotationDegrees), bodyWidth, bodyHeight, lineWidth}
+func NewAndroid7(
+	bodyWidth float64, bodyHeight float64, fillColor color.RGBA,
+	depth int, startPoint Point, rotationDegrees float64, lineWidth float64) *Android {
+	android := &Android{NewComposedFigure3(depth, startPoint, rotationDegrees), bodyWidth, bodyHeight}
+	android.SetLineWidth(lineWidth)
 	android.SetSubClass(android)
 	android.InitializeFigures(fillColor)
 
@@ -37,33 +38,34 @@ func NewAndroid5(
 func (this *Android) InitializeFigures(fillColor color.RGBA) {
 	radius := 5.0
 
-	downBodyPart := NewRoundRectangle(this.BodyWidth, 9.0/8*this.BodyHeight, this.LineWidth, radius)
+	lineWidth := this.GetLineWidth()
+	downBodyPart := NewRoundRectangle(radius, this.BodyWidth, 9.0/8*this.BodyHeight, lineWidth)
 	this.AddFigure("DownBodyPart", downBodyPart)
-	upBodyPart := NewRectangle(this.BodyWidth, this.BodyHeight, this.LineWidth)
+	upBodyPart := NewRectangle(this.BodyWidth, this.BodyHeight, lineWidth)
 	this.AddFigure("upBodyPart", upBodyPart)
 
-	leftArm := NewRoundRectangle(0.2*this.BodyWidth, this.BodyHeight-2*this.LineWidth, this.LineWidth, radius)
-	leftArm.SetStartPoint(Point{-0.2*this.BodyWidth - this.LineWidth, this.LineWidth})
+	leftArm := NewRoundRectangle(radius, 0.2*this.BodyWidth, this.BodyHeight-2*lineWidth, lineWidth)
+	leftArm.SetStartPoint(Point{-0.2*this.BodyWidth - lineWidth, lineWidth})
 	this.AddFigure("leftArm", leftArm)
-	rightArm := NewRoundRectangle(0.2*this.BodyWidth, this.BodyHeight-2*this.LineWidth, this.LineWidth, radius)
-	rightArm.SetStartPoint(Point{this.BodyWidth + this.LineWidth, this.LineWidth})
+	rightArm := NewRoundRectangle(radius, 0.2*this.BodyWidth, this.BodyHeight-2*lineWidth, lineWidth)
+	rightArm.SetStartPoint(Point{this.BodyWidth + lineWidth, lineWidth})
 	this.AddFigure("rightArm", rightArm)
 
-	leftLeg := NewRoundRectangle(0.2*this.BodyWidth, 5.0/8*this.BodyHeight, this.LineWidth, radius)
-	leftLeg.SetStartPoint(Point{0.2 * this.BodyWidth, this.BodyHeight - this.LineWidth})
+	leftLeg := NewRoundRectangle(radius, 0.2*this.BodyWidth, 5.0/8*this.BodyHeight, lineWidth)
+	leftLeg.SetStartPoint(Point{0.2 * this.BodyWidth, this.BodyHeight - lineWidth})
 	this.AddFigure("leftLeg", leftLeg)
 
-	rightLeg := NewRoundRectangle(0.2*this.BodyWidth, 5.0/8*this.BodyHeight, this.LineWidth, radius)
-	rightLeg.SetStartPoint(Point{0.6 * this.BodyWidth, this.BodyHeight - this.LineWidth})
+	rightLeg := NewRoundRectangle(radius, 0.2*this.BodyWidth, 5.0/8*this.BodyHeight, lineWidth)
+	rightLeg.SetStartPoint(Point{0.6 * this.BodyWidth, this.BodyHeight - lineWidth})
 	this.AddFigure("rightLeg", rightLeg)
 
 	head := NewEllipsis5(
-		0.5*this.BodyWidth, 5.0/8*this.BodyHeight, this.LineWidth, -1, Point{0.5 * this.BodyWidth, -this.LineWidth})
+		0.5*this.BodyWidth, 5.0/8*this.BodyHeight, -1, Point{0.5 * this.BodyWidth, -lineWidth}, 0.0, lineWidth)
 	this.AddFigure("head", head)
 
-	leftEye := NewCircle4(radius, this.LineWidth, 0, Point{0.3 * this.BodyWidth, -0.3 * this.BodyWidth})
+	leftEye := NewCircle4(radius, 0, Point{0.3 * this.BodyWidth, -0.3 * this.BodyWidth}, lineWidth)
 	this.AddFigure("leftEye", leftEye)
-	rightEye := NewCircle4(radius, this.LineWidth, 0, Point{0.7 * this.BodyWidth, -0.3 * this.BodyWidth})
+	rightEye := NewCircle4(radius, 0, Point{0.7 * this.BodyWidth, -0.3 * this.BodyWidth}, lineWidth)
 	this.AddFigure("rightEye", rightEye)
 
 	antennaDeltaX := 0.1 * this.BodyWidth
@@ -72,10 +74,10 @@ func (this *Android) InitializeFigures(fillColor color.RGBA) {
 	antennaAngle := -math.Asin(antennaDeltaY/antennaLength) * 180 / math.Pi
 
 	leftAntenna := NewLine5(
-		antennaLength, this.LineWidth, 0, Point{0.3 * this.BodyWidth, -5.0 / 8 * this.BodyHeight}, 180-antennaAngle)
+		antennaLength, 0, Point{0.3 * this.BodyWidth, -5.0 / 8 * this.BodyHeight}, 180-antennaAngle, lineWidth)
 	this.AddFigure("leftAntenna", leftAntenna)
 	rightAntenna := NewLine5(
-		antennaLength, this.LineWidth, 0, Point{0.7 * this.BodyWidth, -5.0 / 8 * this.BodyHeight}, antennaAngle)
+		antennaLength, 0, Point{0.7 * this.BodyWidth, -5.0 / 8 * this.BodyHeight}, antennaAngle, lineWidth)
 	this.AddFigure("rightAntenna", rightAntenna)
 
 	this.figures.traverse(func(figure Figurer) {

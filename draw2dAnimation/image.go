@@ -22,29 +22,39 @@ func newImage() *image {
 		imageLibrary.NewRGBA(imageLibrary.Rect(0, 0, FrameWidth, FrameHeight))}
 }
 
-// Adds figure with string key to the collection.
+// Adds figure with string key to the contained collection.
 func (this *image) AddFigure(name string, figure Figurer) {
 	this.figures.add(name, figure)
 }
 
-// Removes figure by string key from the collection.
+// Removes figure by string key from the contained collection.
 func (this *image) RemoveFigure(name string) {
 	this.figures.remove(name)
 }
 
-// Gets the figure corresponding to the given string key in the collection or nil if not found.
-func (this *image) getByName(name string) Figurer {
+// Removes all figures from the contained collection passing the given filter.
+func (this *image) RemoveByFilter(filter func(Figurer) bool) {
+	this.figures.removeByFilter(filter)
+}
+
+// Gets the figure corresponding to the given string key in the contained collection or nil if not found.
+func (this *image) GetByName(name string) Figurer {
 	return this.figures.getByName(name)
 }
 
-// Updates all contained figures.
+// Gets the string keys and the figures in the contained collection passing the given filter.
+func (this *image) GetByFilter(filter func(Figurer) bool) map[string]Figurer {
+	return this.figures.getByFilter(filter)
+}
+
+// Updates all figures in the contained collection.
 func (this *image) Update() {
 	this.figures.traverse(func(figure Figurer) {
 		figure.Update()
 	})
 }
 
-// Draws all contained figures in their order by depth then by order of creation.
+// Draws all figures in the contained collection in their order by depth then by order of creation.
 func (this *image) Draw() {
 	this.figures.traverse(func(figure Figurer) {
 		figure.Draw()

@@ -4,12 +4,12 @@ package draw2dAnimation
 type Line struct {
 	*Figure
 	Length float64
-	Width  float64
 }
 
 // Constructor setting current struct's fields and default values for the base struct
 func NewLine(length float64, width float64) *Line {
-	line := &Line{NewFigure(), length, width}
+	line := &Line{NewFigure(), length}
+	line.SetLineWidth(width)
 	line.SetSubClass(line)
 
 	return line
@@ -17,8 +17,8 @@ func NewLine(length float64, width float64) *Line {
 
 // Constructor setting both base struct's and current struct's fields.
 func NewLine5(
-	length float64, width float64, depth int, startPoint Point, rotationDegrees float64) *Line {
-	line := &Line{NewFigure3(depth, startPoint, rotationDegrees), length, width}
+	length float64, depth int, startPoint Point, rotationDegrees float64, width float64) *Line {
+	line := &Line{NewFigure4(depth, startPoint, rotationDegrees, width), length}
 	line.SetSubClass(line)
 
 	return line
@@ -27,7 +27,6 @@ func NewLine5(
 // Defines the visualization of the figure according to position (0, 0).
 func (this *Line) Visualize() {
 	graphicContext := GetTheImageGraphicContext()
-	graphicContext.SetLineWidth(this.Width)
 	graphicContext.LineTo(this.Length, 0)
 	graphicContext.Stroke()
 }
