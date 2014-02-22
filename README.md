@@ -32,7 +32,7 @@ Usage
 The main idea
 -------------
 
-Images contain a set of figures to be drawn and saved as frame. Each figure can be updated by rotation, translation or by given custom method (in order to simulate movement for the next frame). By custom method you can update any of the figures fields including depth(layer of the image), position, rotation, rate of translations or rotations, should the figure be filled with it's fill color and changing any other custom or given field.
+Images contain a set of figures to be drawn and saved as frame. Each figure can be scaled or updated by rotation, translation or by given custom method (in order to simulate movement for the next frame). By custom method you can update any of the figures fields including depth(layer of the image), position, rotation, rate of translations or rotations, should the figure be filled with it's fill color and changing any other custom or given field.
 You can create frames from the images and concatenate them in a video.
 
 Extending or adding new figure

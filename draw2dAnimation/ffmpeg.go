@@ -14,7 +14,7 @@ func CreateVideo(inputDir string, outputDir string, fullFileName string, inputFp
 // Creates video using FFmpeg and all of the frames with the global FramePattern in inputDir starting from StartNumber. Overwrite indicates whether the file should be replaces in case that such already exists in the destination folder.
 // Information source: https://trac.ffmpeg.org/wiki/Create%20a%20video%20slideshow%20from%20images
 func CreateVideoWithFrameStartNumber(inputDir string, outputDir string, fullFileName string, inputFps float64, outputFps float64, startNumber int, overwrite bool) {
-	var startNumberArgument string = ""
+	startNumberArgument := ""
 	if startNumber >= 0 {
 		startNumberArgument = fmt.Sprintf("-start_number %d", startNumber)
 	}
@@ -27,7 +27,7 @@ func CreateVideoWithFrameStartNumber(inputDir string, outputDir string, fullFile
 		outputFps,
 		outputDir+fullFileName)
 
-	var input string = "N"
+	input := "N"
 	if overwrite {
 		input = "y"
 	}
@@ -35,9 +35,9 @@ func CreateVideoWithFrameStartNumber(inputDir string, outputDir string, fullFile
 	ExecuteCustomFFMpegCommand(commandArgs, input)
 }
 
-// Executes custom FFmpeg command by given arguments excluding the command name and input string if need. The ffmpeg.exe should be found in the PATH variable or in the current directory.
-func ExecuteCustomFFMpegCommand(args string, path string) {
-	cmd := exec.Command("ffmpeg", args)
+// Executes custom FFmpeg command by given arguments excluding the command name and input string if need. The ffmpeg.exe should be found in the %PATH% variable or in the current directory.
+func ExecuteCustomFFMpegCommand(args string, input string) {
+	cmd := exec.Command("cmd", "/C ffmpeg " + args)
 	if input != "" {
 		cmd.Stdin = strings.NewReader(input)
 	}

@@ -10,19 +10,15 @@ make Figure notseen, also constructors of Figure
 
 make everything unneeded outside private
 
-make looking in GOPATH for ffmpeg.exe and update readme or send ffmpeg.exe also to the resource folder and update readme
-
 Change info in readme - for Composed Figures don't declare the Visualize(), but InitializeFigures() which should be added to new inheriting interface
 
 no check for duplicate keys of figures in collection
-
-for each change update readme AND documentation.
 
 Add functionallity to choose how often the update method is called, UpdateMethod factory, etc.
 
 add clear color for image
 
 Unimportant:
-- get/set scale
+- all translate, rotate, etc. for figure and composed figure should be done only if need (for example no rotation at 0 degrees) also make them in seperate method to reuse in both structs
 
 - text figure should have option for frame with margins

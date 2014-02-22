@@ -56,16 +56,24 @@ func (this *ComposedFigure) Update() {
 	})
 }
 
-// Draw the figure by visualizing all its part taking in to account the translation and rotation of the figure.
+// Draw the figure by visualizing all its part taking in to account the scale, translation and rotation of the figure.
 func (this *ComposedFigure) Draw() {
+	graphicContext := GetTheImageGraphicContext()
+	graphicContext.Translate(this.startPoint.X, this.startPoint.Y)
+	graphicContext.Rotate(this.rotationDegrees * (math.Pi / 180.0))
+	
+	if this.scale.X != 1.0 || this.scale.Y != 1.0 {
+		graphicContext.Scale(this.scale.X, this.scale.Y)
+	}
+
 	this.figures.traverse(func(figure Figurer) {
-		graphicContext := GetTheImageGraphicContext()
-		graphicContext.Translate(this.startPoint.X, this.startPoint.Y)
-		graphicContext.Rotate(this.rotationDegrees * (math.Pi / 180.0))
-
 		figure.Draw()
-
-		graphicContext.Rotate(-this.rotationDegrees * (math.Pi / 180.0))
-		graphicContext.Translate(-this.startPoint.X, -this.startPoint.Y)
 	})
+	
+	if this.scale.X != 1.0 || this.scale.Y != 1.0 {
+		graphicContext.Scale(1 / this.scale.X, 1 / this.scale.Y)
+	}
+	
+	graphicContext.Rotate(-this.rotationDegrees * (math.Pi / 180.0))
+	graphicContext.Translate(-this.startPoint.X, -this.startPoint.Y)
 }

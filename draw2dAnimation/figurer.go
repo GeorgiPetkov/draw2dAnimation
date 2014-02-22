@@ -20,6 +20,8 @@ type Figurer interface {
 	SetIsFilled(value bool)
 	GetLineWidth() float64
 	SetLineWidth(value float64)
+	GetScale() Point
+	SetScale(value Point)
 	GetUpdateTranslation() Point
 	SetUpdateTranslation(value Point)
 	GetUpdateRotationDegrees() float64

@@ -33,7 +33,8 @@ func main() {
 	android := draw2dAnimation.NewAndroid(100.0, 80.0, 3.0, color.RGBA{0, 255, 0, 255})
 	android.SetStartPoint(draw2dAnimation.Point{100, 100})
 	android.SetUpdateTranslation(draw2dAnimation.Point{5.0, 0.0})
-
+	android.SetScale(draw2dAnimation.Point{2.0, 1.0})
+	
 	image := draw2dAnimation.GetTheImage()
 
 	image.AddFigure("TheOneAndOnly", android)

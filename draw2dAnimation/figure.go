@@ -16,6 +16,7 @@ type Figure struct {
 	strokeColor           color.RGBA
 	isFilled              bool
 	lineWidth             float64
+	scale                 Point
 	updateTypes           updateType
 	updateTranslation     Point
 	updateRotationDegrees float64
@@ -39,6 +40,7 @@ func NewFigure4(depth int, startPoint Point, rotationDegrees float64, lineWidth 
 		strokeColor:     color.RGBA{0, 0, 0, 255},
 		isFilled:        false,
 		lineWidth:       lineWidth,
+		scale:           Point{1.0, 1.0},
 		updateTypes:     None}
 }
 
@@ -128,6 +130,16 @@ func (this *Figure) SetLineWidth(value float64) {
 	this.lineWidth = value
 }
 
+// Gets the current scale ratio.
+func (this *Figure) GetScale() Point {
+	return this.scale
+}
+
+// Sets the scale of the figure.
+func (this *Figure) SetScale(value Point) {
+	this.scale = value
+}
+
 // Gets the degrees by which the figure rotates on each call of Update().
 func (this *Figure) GetUpdateRotationDegrees() float64 {
 	return this.updateRotationDegrees
@@ -180,7 +192,7 @@ func (this *Figure) SetUpdateMethod(value func(Figurer)) {
 func (this Figure) Draw() {
 	graphicContext := GetTheImageGraphicContext()
 	graphicContext.Save()
-
+	
 	graphicContext.Translate(this.startPoint.X, this.startPoint.Y)
 	graphicContext.Rotate(this.rotationDegrees * (math.Pi / 180.0))
 	graphicContext.SetLineWidth(this.lineWidth)
@@ -191,6 +203,10 @@ func (this Figure) Draw() {
 
 	graphicContext.SetStrokeColor(this.strokeColor)
 
+	if this.scale.X != 1.0 || this.scale.Y != 1.0 {
+		graphicContext.Scale(this.scale.X, this.scale.Y)
+	}
+	
 	this.subClass.Visualize()
 
 	if this.isFilled {
