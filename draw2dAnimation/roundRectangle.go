@@ -11,25 +11,25 @@ type RoundRectangle struct {
 }
 
 // Constructor setting current struct's fields and default values for the base struct
-func NewRoundRectangle(radius float64, length float64, width float64, lineWidth float64) *RoundRectangle {
-	rectangle := &RoundRectangle{NewRectangle(length, width, lineWidth), radius}
-	rectangle.SetSubClass(rectangle)
+func NewRoundRectangle(radius float64, width float64, height float64, lineWidth float64) *RoundRectangle {
+	roundRectangle := &RoundRectangle{NewRectangle(width, height, lineWidth), radius}
+	roundRectangle.SetSubClass(roundRectangle)
 
-	return rectangle
+	return roundRectangle
 }
 
 // Constructor setting both base struct's and current struct's fields.
 func NewRoundRectangle7(
-	radius float64, length float64, width float64,
+	radius float64, width float64, height float64,
 	depth int, startPoint Point, rotationDegrees float64, lineWidth float64) *RoundRectangle {
-	rectangle := &RoundRectangle{NewRectangle6(length, width, depth, startPoint, rotationDegrees, lineWidth), radius}
-	rectangle.SetSubClass(rectangle)
+	roundRectangle := &RoundRectangle{NewRectangle6(width, height, depth, startPoint, rotationDegrees, lineWidth), radius}
+	roundRectangle.SetSubClass(roundRectangle)
 
-	return rectangle
+	return roundRectangle
 }
 
 // Defines the visualization of the figure according to position (0, 0).
 func (this *RoundRectangle) Visualize() {
 	graphicContext := GetTheImageGraphicContext()
-	draw2d.RoundRect(graphicContext, 0, 0, this.Length, this.Width, this.Radius, this.Radius)
+	draw2d.RoundRect(graphicContext, 0, 0, this.Width, this.Height, this.Radius, this.Radius)
 }

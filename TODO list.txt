@@ -20,5 +20,3 @@ add clear color for image
 
 Unimportant:
 - all translate, rotate, etc. for figure and composed figure should be done only if need (for example no rotation at 0 degrees) also make them in seperate method to reuse in both structs
-
-- text figure should have option for frame with margins

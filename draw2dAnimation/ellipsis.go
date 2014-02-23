@@ -4,7 +4,7 @@ import (
 	"math"
 )
 
-// A figure type representing elipsis. Change RadiusX and RadiusY for adjusting the figure to the desired ratio.
+// A figure type representing ellipsis. Change RadiusX and RadiusY for adjusting the figure to the desired ratio.
 type Ellipsis struct {
 	*Figure
 	RadiusX float64
