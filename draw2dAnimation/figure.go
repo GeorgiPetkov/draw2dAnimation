@@ -193,8 +193,14 @@ func (this Figure) Draw() {
 	graphicContext := GetTheImageGraphicContext()
 	graphicContext.Save()
 	
-	graphicContext.Translate(this.startPoint.X, this.startPoint.Y)
-	graphicContext.Rotate(this.rotationDegrees * (math.Pi / 180.0))
+	if this.startPoint.X != 0 || this.startPoint.Y != 0 {
+		graphicContext.Translate(this.startPoint.X, this.startPoint.Y)
+	}
+	
+	if this.rotationDegrees != 0.0 {
+		graphicContext.Rotate(this.rotationDegrees * (math.Pi / 180.0))
+	}
+	
 	graphicContext.SetLineWidth(this.lineWidth)
 
 	if this.isFilled {
