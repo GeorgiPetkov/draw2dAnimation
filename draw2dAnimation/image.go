@@ -6,20 +6,35 @@ import (
 	imageLibrary "image"
 	"image/draw"
 	"image/png"
+	"image/color"
 	"os"
 )
 
-// The image struct contains a set of all figures and take operations over them like drawing, updating, adding and deleting figures. Can save the result as a .png file.
+// The image struct contains a set of all figures and take operations over them like drawing, updating, adding, deleting or filtering figures. Can save the result as a .png file. The default clear color is white.
 type image struct {
 	figures *figuresCollection
 	canvas  draw.Image
+	ClearColor color.Color
+}
+
+// Clears the image using the setted clear color.
+func (this *image) Clear() {
+	width, height := this.canvas.Bounds().Dx(), this.canvas.Bounds().Dy()
+	this.ClearRectangle(0, 0, width, height)
+}
+
+// Clears a rectangle area of the image using the setted clear color.
+func (this *image) ClearRectangle(x1, y1, x2, y2 int) {
+	imageColor := imageLibrary.NewUniform(this.ClearColor)
+	draw.Draw(this.canvas, imageLibrary.Rect(x1, y1, x2, y2), imageColor, imageLibrary.ZP, draw.Over)
 }
 
 // Default constructor for the struct starting with empty collection of figures and setting the canvas reference.
 func newImage() *image {
 	return &image{
 		newFiguresCollection(),
-		imageLibrary.NewRGBA(imageLibrary.Rect(0, 0, FrameWidth, FrameHeight))}
+		imageLibrary.NewRGBA(imageLibrary.Rect(0, 0, FrameWidth, FrameHeight)),
+		color.RGBA{255, 255, 255, 255}}
 }
 
 // Adds figure with string key to the contained collection.
@@ -59,12 +74,6 @@ func (this *image) Draw() {
 	this.figures.traverse(func(figure Figurer) {
 		figure.Draw()
 	})
-}
-
-// Clears the canvas of the image.
-func (this *image) Clear() {
-	graphicContext := GetTheImageGraphicContext()
-	graphicContext.Clear()
 }
 
 // Saves the result as a .png file using the DestinationFolder and FramePattern global variables.

@@ -9,6 +9,4 @@ no check for duplicate keys of figures in collection
 
 Add functionallity to choose how often the update method is called, UpdateMethod factory, etc.
 
-add clear color for image
-
 add functionality to add music to the video
