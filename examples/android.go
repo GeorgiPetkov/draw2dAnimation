@@ -45,9 +45,9 @@ func main() {
 	// move left leg up
 	leftLeg.SetStartPoint(draw2dAnimation.Point{leftLeg.GetStartPoint().X, leftLeg.GetStartPoint().Y - stepSize})
 
-	android.SetUpdateMethod(SwapLegs)
-	leftLeg.SetUpdateMethod(MoveLeftLeg)
-	rightLeg.SetUpdateMethod(MoveRightLeg)
+	android.SetUpdateMethod(draw2dAnimation.NewUpdateMethod(SwapLegs))
+	leftLeg.SetUpdateMethod(draw2dAnimation.NewUpdateMethod(MoveLeftLeg))
+	rightLeg.SetUpdateMethod(draw2dAnimation.NewUpdateMethod(MoveRightLeg))
 
 	for i := 0; i < 100; i += 1 {
 		image.Draw()
@@ -56,5 +56,5 @@ func main() {
 		image.Clear()
 	}
 
-	draw2dAnimation.CreateVideo("../result/", "../result/", "out.mp4", 16.0, 25, true)
+	draw2dAnimation.CreateVideo("../result/", "../result/out.mp4", 16.0, 25, true)
 }

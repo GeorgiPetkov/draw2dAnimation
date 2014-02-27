@@ -26,8 +26,8 @@ type Figurer interface {
 	SetUpdateTranslation(value Point)
 	GetUpdateRotationDegrees() float64
 	SetUpdateRotationDegrees(value float64)
-	GetUpdateMethod() func(Figurer)
-	SetUpdateMethod(value func(Figurer))
+	GetUpdateMethod() *UpdateMethod
+	SetUpdateMethod(value *UpdateMethod)
 	Draw()
 	Update()
 	Visualize()

@@ -20,7 +20,7 @@ type Figure struct {
 	updateTypes           updateType
 	updateTranslation     Point
 	updateRotationDegrees float64
-	updateMethod          func(Figurer)
+	updateMethod          *UpdateMethod
 }
 
 // Default constructor.
@@ -172,20 +172,22 @@ func (this *Figure) SetUpdateTranslation(value Point) {
 	this.updateTranslation = value
 }
 
-// Gets the custom update method used to update the figure on each call of Update().
-func (this *Figure) GetUpdateMethod() func(Figurer) {
+// Gets the update method used to update the figure on each call of Update().
+func (this *Figure) GetUpdateMethod() *UpdateMethod {
 	return this.updateMethod
 }
 
-// Sets a custom update method to be used in updating the figure on each call of Update().
-func (this *Figure) SetUpdateMethod(value func(Figurer)) {
+// Sets the update method to be used for updating the figure on each call of Update(). A copy of the update method is used to avoid use of the same method by more than one figures.
+func (this *Figure) SetUpdateMethod(value *UpdateMethod) {
 	if value == nil {
 		this.updateTypes &^= Custom
 	} else {
 		this.updateTypes |= Custom
 	}
 
-	this.updateMethod = value
+	// copy by value
+	updateMethod := *value;
+	this.updateMethod = &updateMethod
 }
 
 // Draws the figure taking into account the translation, rotation and the rest common properties of all figures and using the implemented by the extending subClass Visualize() method.
@@ -224,10 +226,10 @@ func (this Figure) Draw() {
 	graphicContext.Restore()
 }
 
-// Updates the figure by the custom method, the update translation and the update rotation degrees.
+// Updates the figure by the update method, the update translation and the update rotation degrees.
 func (this *Figure) Update() {
 	if (this.updateTypes & Custom) != 0 {
-		this.updateMethod(this.subClass)
+		this.updateMethod.Update(this.subClass)
 	}
 
 	if (this.updateTypes & Translation) != 0 {

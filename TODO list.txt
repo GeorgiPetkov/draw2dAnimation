@@ -3,4 +3,4 @@ Make it cross-platform (not just Windows)
 
 Write test for everything possible
 
-Add functionallity to choose how often the update method is called, UpdateMethod factory, etc.
+missing dot at comment for constructor with default base parameters
