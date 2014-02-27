@@ -3,10 +3,4 @@ Make it cross-platform (not just Windows)
 
 Write test for everything possible
 
-make everything unneeded outside private
-
-no check for duplicate keys of figures in collection
-
 Add functionallity to choose how often the update method is called, UpdateMethod factory, etc.
-
-add functionality to add music to the video

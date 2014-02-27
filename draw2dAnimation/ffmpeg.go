@@ -6,14 +6,32 @@ import (
 	"strings"
 )
 
+// Add music to a video and the result is saved as a new file. All files should contain their extensions specified.
+// Information source: http://blog.noizeramp.com/2011/04/21/adding-audio-track-to-video-with-ffmpeg/
+func AddMusicToVideo(videoPath string, musicPath string, outputPathAndFileName string, overwrite bool) {
+	commandArgs := fmt.Sprintf(
+		"-i %s -i %s -vcodec copy -acodec copy -acodec copy -shortest %s",
+		videoPath,
+		musicPath,
+		outputPathAndFileName)
+	
+	input := "N"
+	if overwrite {
+		input = "y"
+	}
+
+	ExecuteCustomFFMpegCommand(commandArgs, input)
+		
+}
+
 // Creates video using FFmpeg and all of the frames with the global FramePattern in inputDir. Overwrite indicates whether the file should be replaces in case that such already exists in the destination folder.
-func CreateVideo(inputDir string, outputDir string, fullFileName string, inputFps float64, outputFps float64, overwrite bool) {
-	CreateVideoWithFrameStartNumber(inputDir, outputDir, fullFileName, inputFps, outputFps, -1, overwrite)
+func CreateVideo(inputDir string, outputPathAndFileName string, inputFps float64, outputFps float64, overwrite bool) {
+	CreateVideoWithFrameStartNumber(inputDir, outputPathAndFileName, inputFps, outputFps, -1, overwrite)
 }
 
 // Creates video using FFmpeg and all of the frames with the global FramePattern in inputDir starting from StartNumber. Overwrite indicates whether the file should be replaces in case that such already exists in the destination folder.
 // Information source: https://trac.ffmpeg.org/wiki/Create%20a%20video%20slideshow%20from%20images
-func CreateVideoWithFrameStartNumber(inputDir string, outputDir string, fullFileName string, inputFps float64, outputFps float64, startNumber int, overwrite bool) {
+func CreateVideoWithFrameStartNumber(inputDir string, outputPathAndFileName string, inputFps float64, outputFps float64, startNumber int, overwrite bool) {
 	startNumberArgument := ""
 	if startNumber >= 0 {
 		startNumberArgument = fmt.Sprintf("-start_number %d", startNumber)
@@ -25,7 +43,7 @@ func CreateVideoWithFrameStartNumber(inputDir string, outputDir string, fullFile
 		startNumberArgument,
 		inputDir+FramePattern+"%03d.png",
 		outputFps,
-		outputDir+fullFileName)
+		outputPathAndFileName)
 
 	input := "N"
 	if overwrite {
